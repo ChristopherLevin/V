@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Be My Valentine?</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet" />
+<style>
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  background: radial-gradient(circle at center, #ff5fa0, #c00070);
+  font-family: 'Bubblegum Sans', cursive;
+  perspective: 1000px;
+  color: #fff;
+  overflow: hidden;
+}
+.screen {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+h1, .countdown {
+  margin: 0 20px 40px 20px;
+  z-index: 3;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  text-align: center;
+}
+h1 {
+  font-size: clamp(28px, 6vw, 60px);
+}
+.countdown {
+  font-size: 20vw;
+  font-weight: bold;
+  animation: blink 0.8s infinite, pulse 1.2s infinite alternate;
+  color: #ffd1e6;
+}
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.3; }
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.3); }
+}
+.buttons {
+  display: flex;
+  gap: 24px;
+  z-index: 3;
+}
+button {
+  font-family: 'Bubblegum Sans', cursive;
+  font-size: 24px;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+button:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.5);
+}
+#yesBtn {
+  background: linear-gradient(145deg, #ff6b6b, #ff1a70);
+  color: #fff;
+}
+#noBtn {
+  background: #fff;
+  color: #ff6b6b;
+  position: absolute;
+  font-weight: bold;
+}
+.heart {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  transform-style: preserve-3d;
+  transform: rotate(-45deg) translateZ(40px);
+  animation: fall linear infinite;
+}
+.heart .core {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #ff7aa0, #c00070);
+  box-shadow:
+    inset -10px -10px 20px rgba(0,0,0,0.25),
+    inset 6px 6px 12px rgba(255,255,255,0.35),
+    0 14px 28px rgba(0,0,0,0.35);
+}
+.heart .core:before,
+.heart .core:after {
+  content: '';
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #ff7aa0, #c00070);
+  border-radius: 50%;
+  box-shadow:
+    inset -10px -10px 20px rgba(0,0,0,0.25),
+    inset 6px 6px 12px rgba(255,255,255,0.35);
+}
+.heart .core:before { top: -35px; left: 0; }
+.heart .core:after  { left: 35px; top: 0; }
+@keyframes fall {
+  from { transform: translateY(-150px) rotate(-45deg) translateZ(40px); opacity: 1; }
+  50%  { transform: translateY(50vh) rotate(-45deg) translateZ(60px); }
+  to   { transform: translateY(110vh) rotate(-45deg) translateZ(20px); opacity: 0.5; }
+}
+.heart.h1 { left: 5%; animation-duration: 6s; }
+.heart.h2 { left: 25%; animation-duration: 8s; }
+.heart.h3 { left: 50%; animation-duration: 5.5s; }
+.heart.h4 { left: 70%; animation-duration: 7s; }
+.heart.h5 { left: 90%; animation-duration: 9s; }
+.big-heart-wrapper {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  transform: translateZ(80px) rotate(-45deg);
+  opacity: 0.95;
+  z-index: 1;
+  filter: drop-shadow(0 0 30px #ff7aa0);
+}
+.big-heart {
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  background: linear-gradient(145deg, #ff7aa0, #ff3a8c);
+  box-shadow:
+    inset -20px -20px 50px rgba(0,0,0,0.25),
+    inset 12px 12px 30px rgba(255,255,255,0.35),
+    0 24px 48px rgba(0,0,0,0.5);
+}
+.big-heart:before,
+.big-heart:after {
+  content: '';
+  position: absolute;
+  width: 380px;
+  height: 380px;
+  background: linear-gradient(145deg, #ff7aa0, #ff3a8c);
+  border-radius: 50%;
+  box-shadow:
+    inset -20px -20px 50px rgba(0,0,0,0.25),
+    inset 12px 12px 30px rgba(255,255,255,0.35);
+}
+.big-heart:before { top: -190px; left: 0; }
+.big-heart:after  { left: 190px; top: 0; }
+#yesPage, #countdown { display: none; }
+</style>
+</head>
+<body>
+<audio id="bgMusic" loop muted playsinline>
+  <source src="https://archive.org/download/BrunoMajorOldFashioned/Bruno%20Major%20-%20Old%20Fashioned.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Falling hearts -->
+<div class="heart h1"><div class="core"></div></div>
+<div class="heart h2"><div class="core"></div></div>
+<div class="heart h3"><div class="core"></div></div>
+<div class="heart h4"><div class="core"></div></div>
+<div class="heart h5"><div class="core"></div></div>
+
+<div id="main" class="screen">
+  <h1>Johanna, will you be my valentine?</h1>
+  <div class="buttons">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+</div>
+
+<div id="countdown" class="screen">
+  <div class="countdown" id="countNumber">5</div>
+  <p style="font-size:2vw;color:#fff;text-shadow:0 5px 15px rgba(0,0,0,0.4);">Get ready for a magical surprise...</p>
+</div>
+
+<div id="yesPage" class="screen">
+  <div class="big-heart-wrapper">
+    <div class="big-heart"></div>
+  </div>
+  <h1>Avy jorrāelan gō, Avy jorrāelan sir se kesan jorrāelagon ao ēva se mōris hen jēda. Iksā ñuha prūmia se nyke ūndegon ao. Pāsagon isse nyke bona kesan gaomagon ao ȳgha. Avy jorrāelan.</h1>
+</div>
+
+<script>
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const main = document.getElementById('main');
+const countdownScreen = document.getElementById('countdown');
+const countNumber = document.getElementById('countNumber');
+const yesPage = document.getElementById('yesPage');
+const music = document.getElementById('bgMusic');
+
+window.addEventListener('load', () => {
+  music.play().catch(() => {});
+});
+
+noBtn.addEventListener('click', () => {
+  const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+  noBtn.style.left = Math.random() * maxX + 'px';
+  noBtn.style.top = Math.random() * maxY + 'px';
+});
+
+yesBtn.addEventListener('click', () => {
+  main.style.display = 'none';
+  countdownScreen.style.display = 'flex';
+  let count = 5;
+  countNumber.textContent = count;
+  const interval = setInterval(() => {
+    count--;
+    if(count <= 0){
+      clearInterval(interval);
+      countdownScreen.style.display = 'none';
+      yesPage.style.display = 'flex';
+      music.muted = false;
+      music.volume = 0;
+      let vol = 0;
+      const fadeIn = setInterval(() => {
+        vol += 0.01;
+        if(vol >= 1){ vol = 1; clearInterval(fadeIn); }
+        music.volume = vol;
+      }, 100);
+    } else {
+      countNumber.textContent = count;
+    }
+  }, 1000);
+});
+</script>
+</body>
+</html>
